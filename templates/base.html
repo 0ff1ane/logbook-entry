@@ -1,0 +1,26 @@
+{% load django_vite %}
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <!-- vite hmr -->
+        {% vite_hmr_client %}
+        <!-- vite react refresh -->
+        {% vite_react_refresh %}
+        <!-- add main entry point -->
+        {% vite_asset 'src/main.tsx' %}
+        <title>Django React Inertia</title>
+        <link rel="icon" href="/static/homepage/images/favicon.png" />
+        {% csrf_token %}
+        <script>
+            window.csrftoken = document.querySelector(
+                "[name=csrfmiddlewaretoken]",
+            ).value;
+        </script>
+    </head>
+    <body>
+        <!-- inertia -->
+        {% block inertia %}{% endblock %}
+    </body>
+</html>
