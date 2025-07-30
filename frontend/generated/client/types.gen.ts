@@ -41,6 +41,14 @@ export type CustomUserSchema = {
      * Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
      */
     username: string;
+    /**
+     * Name
+     */
+    name: string;
+    /**
+     * Initials
+     */
+    initials: string;
 };
 
 /**
@@ -55,6 +63,236 @@ export type RegisterResponseSchema = {
      * Message
      */
     message?: string | null;
+};
+
+/**
+ * RegisterSchema
+ */
+export type RegisterSchema = {
+    /**
+     * Email
+     */
+    email: string;
+    /**
+     * Password
+     */
+    password: string;
+    /**
+     * Name
+     */
+    name: string;
+    /**
+     * Initials
+     */
+    initials: string;
+};
+
+/**
+ * DriverStatuses
+ */
+export type DriverStatuses = 'OFF_DUTY' | 'SLEEPER_BERTH' | 'DRIVING' | 'ON_DUTY' | 'DELIVERED';
+
+/**
+ * LogBookSchema
+ */
+export type LogBookSchema = {
+    created_by: CustomUserSchema;
+    /**
+     * Log Entries
+     */
+    log_entries: Array<LogEntrySchema>;
+    /**
+     * ID
+     */
+    id?: number | null;
+    /**
+     * Driver Name
+     */
+    driver_name: string;
+    /**
+     * Driver Initials
+     */
+    driver_initials: string;
+    /**
+     * Driver Number
+     */
+    driver_number: string;
+    /**
+     * Codriver Name
+     */
+    codriver_name?: string | null;
+    /**
+     * Operating Center Address
+     */
+    operating_center_address: string;
+    /**
+     * Vehicle Number
+     */
+    vehicle_number: string;
+    /**
+     * Trailer Number
+     */
+    trailer_number: string;
+    /**
+     * Miles Driven
+     */
+    miles_driven?: number | null;
+    /**
+     * Shipper
+     */
+    shipper: string;
+    /**
+     * Commodity
+     */
+    commodity: string;
+    /**
+     * Load Number
+     */
+    load_number: string;
+    /**
+     * Start Date
+     */
+    start_date: string;
+    /**
+     * End Date
+     */
+    end_date?: string | null;
+    /**
+     * Created at
+     */
+    created_at: string;
+};
+
+/**
+ * LogEntrySchema
+ */
+export type LogEntrySchema = {
+    status: DriverStatuses;
+    /**
+     * Time Point
+     */
+    time_point: number;
+    /**
+     * Remark
+     */
+    remark: string;
+};
+
+/**
+ * CreateLogBookResponseSchema
+ */
+export type CreateLogBookResponseSchema = {
+    /**
+     * Success
+     */
+    success: boolean;
+    /**
+     * Message
+     */
+    message?: string | null;
+    payload?: LogBookSchema | null;
+};
+
+/**
+ * CreateLogBookSchema
+ */
+export type CreateLogBookSchema = {
+    /**
+     * Driver Name
+     */
+    driver_name: string;
+    /**
+     * Driver Initials
+     */
+    driver_initials: string;
+    /**
+     * Driver Number
+     */
+    driver_number: string;
+    /**
+     * Codriver Name
+     */
+    codriver_name?: string | null;
+    /**
+     * Operating Center Address
+     */
+    operating_center_address: string;
+    /**
+     * Vehicle Number
+     */
+    vehicle_number: string;
+    /**
+     * Trailer Number
+     */
+    trailer_number: string;
+    /**
+     * Shipper
+     */
+    shipper: string;
+    /**
+     * Commodity
+     */
+    commodity: string;
+    /**
+     * Load Number
+     */
+    load_number: string;
+    /**
+     * Start Date
+     */
+    start_date: string;
+};
+
+/**
+ * UpdateLogBookSchema
+ */
+export type UpdateLogBookSchema = {
+    /**
+     * Logbook Id
+     */
+    logbook_id: number;
+    /**
+     * Miles Driven
+     */
+    miles_driven: number;
+    /**
+     * End Date
+     */
+    end_date: string;
+};
+
+/**
+ * CreateLogEntryResponseSchema
+ */
+export type CreateLogEntryResponseSchema = {
+    /**
+     * Success
+     */
+    success: boolean;
+    /**
+     * Message
+     */
+    message?: string | null;
+    payload?: LogEntrySchema | null;
+};
+
+/**
+ * CreateLogEntrySchema
+ */
+export type CreateLogEntrySchema = {
+    /**
+     * Logbook Id
+     */
+    logbook_id: number;
+    status: DriverStatuses;
+    /**
+     * Time Point
+     */
+    time_point: number;
+    /**
+     * Remark
+     */
+    remark: string;
 };
 
 /**
@@ -161,7 +399,7 @@ export type AppsAccountsRoutesMeResponses = {
 export type AppsAccountsRoutesMeResponse = AppsAccountsRoutesMeResponses[keyof AppsAccountsRoutesMeResponses];
 
 export type AppsAccountsRoutesRegisterData = {
-    body: SignInSchema;
+    body: RegisterSchema;
     path?: never;
     query?: never;
     url: '/api/accounts/register';
@@ -175,6 +413,92 @@ export type AppsAccountsRoutesRegisterResponses = {
 };
 
 export type AppsAccountsRoutesRegisterResponse = AppsAccountsRoutesRegisterResponses[keyof AppsAccountsRoutesRegisterResponses];
+
+export type AppsLogbooksLogbooksRoutesListLogbooksData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/logbooks/';
+};
+
+export type AppsLogbooksLogbooksRoutesListLogbooksResponses = {
+    /**
+     * Response
+     * OK
+     */
+    200: Array<LogBookSchema>;
+};
+
+export type AppsLogbooksLogbooksRoutesListLogbooksResponse = AppsLogbooksLogbooksRoutesListLogbooksResponses[keyof AppsLogbooksLogbooksRoutesListLogbooksResponses];
+
+export type AppsLogbooksLogbooksRoutesAddLogbookData = {
+    body: CreateLogBookSchema;
+    path?: never;
+    query?: never;
+    url: '/api/logbooks/';
+};
+
+export type AppsLogbooksLogbooksRoutesAddLogbookResponses = {
+    /**
+     * OK
+     */
+    200: CreateLogBookResponseSchema;
+};
+
+export type AppsLogbooksLogbooksRoutesAddLogbookResponse = AppsLogbooksLogbooksRoutesAddLogbookResponses[keyof AppsLogbooksLogbooksRoutesAddLogbookResponses];
+
+export type AppsLogbooksLogbooksRoutesUpdateLogbookData = {
+    body: UpdateLogBookSchema;
+    path?: never;
+    query?: never;
+    url: '/api/logbooks/';
+};
+
+export type AppsLogbooksLogbooksRoutesUpdateLogbookResponses = {
+    /**
+     * OK
+     */
+    200: LogBookSchema;
+};
+
+export type AppsLogbooksLogbooksRoutesUpdateLogbookResponse = AppsLogbooksLogbooksRoutesUpdateLogbookResponses[keyof AppsLogbooksLogbooksRoutesUpdateLogbookResponses];
+
+export type AppsLogbooksLogbooksRoutesGetLogbookData = {
+    body?: never;
+    path: {
+        /**
+         * Logbook Id
+         */
+        logbook_id: number;
+    };
+    query?: never;
+    url: '/api/logbooks/{logbook_id}';
+};
+
+export type AppsLogbooksLogbooksRoutesGetLogbookResponses = {
+    /**
+     * OK
+     */
+    200: LogBookSchema | null;
+};
+
+export type AppsLogbooksLogbooksRoutesGetLogbookResponse = AppsLogbooksLogbooksRoutesGetLogbookResponses[keyof AppsLogbooksLogbooksRoutesGetLogbookResponses];
+
+export type AppsLogbooksLogentriesRoutesAddLogentryData = {
+    body: CreateLogEntrySchema;
+    path?: never;
+    query?: never;
+    url: '/api/logentries/';
+};
+
+export type AppsLogbooksLogentriesRoutesAddLogentryResponses = {
+    /**
+     * OK
+     */
+    200: CreateLogEntryResponseSchema;
+};
+
+export type AppsLogbooksLogentriesRoutesAddLogentryResponse = AppsLogbooksLogentriesRoutesAddLogentryResponses[keyof AppsLogbooksLogentriesRoutesAddLogentryResponses];
 
 export type AppsTodosRoutesListTodosData = {
     body?: never;

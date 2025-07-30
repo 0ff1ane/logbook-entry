@@ -6,7 +6,11 @@ from apps.accounts.routes import router as accounts_router
 class AccountsRoutesTest(TestCase):
     def test_register(self):
         client = SessionTestClient(accounts_router)
-        register_response = client.post(path="/register", data=None, json={"email": "john", "password": "smith"})
+        register_response = client.post(
+            path="/register",
+            data=None,
+            json={"email": "john", "password": "smith", "name": "John Smith", "initials": "JS"}
+        )
 
         self.assertEqual(register_response.status_code, 200)
         self.assertEqual(register_response.json(), {'message': 'User registered', 'success': True})

@@ -6,8 +6,8 @@ class AccountsTestCase(TestCase):
     email1 = "user1@gg.com"
     email2 = "user2@gg.com"
     def setUp(self):
-        Accounts.create_user(email=self.email1, password="oijasod")
-        Accounts.create_user(email=self.email2, password="joaisjdosd")
+        Accounts.create_user(email=self.email1, password="oijasod", name="Some Name", initials="INT")
+        Accounts.create_user(email=self.email2, password="joaisjdosd", name="Name Some", initials="TNI")
 
     def test_users_exist(self):
         """Users created are in database"""

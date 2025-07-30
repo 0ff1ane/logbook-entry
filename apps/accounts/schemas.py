@@ -10,10 +10,17 @@ class SignInSchema(BaseModel):
     password: str
 
 
+class RegisterSchema(BaseModel):
+    email: str
+    password: str
+    name: str
+    initials: str
+
+
 class CustomUserSchema(ModelSchema):
     class Meta:
         model = CustomUser
-        fields = ['email', 'username']
+        fields = ['email', 'username', 'name', 'initials']
 
 
 class LoginResponseSchema(BaseModel):

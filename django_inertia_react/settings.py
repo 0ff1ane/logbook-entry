@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django_vite',
     'inertia',
     'accounts',
+    'logbooks',
     'todos'
 ]
 
@@ -84,7 +85,7 @@ WSGI_APPLICATION = 'django_inertia_react.wsgi.application'
 
 DATABASES = {
     "default": dj_database_url.config(
-        default="postgresql://sid@localhost:5432/django_inertia_react_dev", conn_max_age=600
+        default="postgresql://sid@localhost:5432/spotter_logbook_dev", conn_max_age=600
     )
 }
 

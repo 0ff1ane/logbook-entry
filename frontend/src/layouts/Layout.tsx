@@ -42,12 +42,12 @@ function NavBar() {
 
   return (
     <nav className="bg-gray-800 p-4 flex justify-between items-center">
-      <div className="flex gap-3 items-end">
+      <div className="flex gap-3 items-center">
         <div className="text-gray-100 text-lg font-semibold">
-          Django Inertia React
+          Log Book Keeper
         </div>
-        <Link href="/todos" className={pageClasses("/todos")}>
-          Todos
+        <Link href="/logbooks" className="text-gray-200">
+          Logbooks
         </Link>
       </div>
       <div className="flex items-center space-x-4">

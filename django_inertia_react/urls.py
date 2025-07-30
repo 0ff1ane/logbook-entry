@@ -23,5 +23,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("api/", ninja_api.urls),
     path("", inertia_views.login, name="Login"),
-    path("todos", inertia_views.todos, name="Todos"),
+    path("logbooks", inertia_views.logbooks, name="LogBooksTable"),
+    path("logbooks/new", inertia_views.new_logbook, name="NewLogBook"),
+    path("logbook/<int:logbook_id>", inertia_views.logbook, name="LogBook"),
+    path("log", inertia_views.log, name="Log"),
 ]

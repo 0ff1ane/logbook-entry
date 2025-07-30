@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate, login as django_login, logout as d
 from django.middleware.csrf import get_token
 
 from apps.accounts.accounts import Accounts
-from .schemas import RegisterResponseSchema, SignInSchema, CustomUserSchema, LoginResponseSchema
+from .schemas import RegisterResponseSchema, RegisterSchema, SignInSchema, CustomUserSchema, LoginResponseSchema
 
 
 router = Router()
@@ -44,9 +44,9 @@ def me(request):
 
 
 @router.post("/register", auth=None, response=RegisterResponseSchema)
-def register(request, payload: SignInSchema) -> RegisterResponseSchema:
+def register(request, payload: RegisterSchema) -> RegisterResponseSchema:
     try:
-        Accounts.create_user(email=payload.email, password=payload.password)
+        Accounts.create_user(email=payload.email, password=payload.password, name=payload.name, initials=payload.initials)
         return RegisterResponseSchema(success=True, message= "User registered")
     except Exception as e:
         print(e)

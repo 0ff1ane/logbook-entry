@@ -7,7 +7,7 @@ class TodosTestCase(TestCase):
     email = "user1@gg.com"
 
     def setUp(self):
-        user = Accounts.create_user(email=self.email, password="oijasod")
+        user = Accounts.create_user(email=self.email, password="oijasod", name="The Who", initials="TW")
         Todos.add_todo(text="initial todo", user_id=user.id)
 
     def test_adding_todos(self):

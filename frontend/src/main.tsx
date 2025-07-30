@@ -2,6 +2,10 @@ import { StrictMode } from "react";
 import { createInertiaApp } from "@inertiajs/react";
 import { createRoot } from "react-dom/client";
 import "./App.css";
+import "@mantine/core/styles.css";
+import "@mantine/dates/styles.css";
+import { MantineProvider } from "@mantine/core";
+
 import Layout from "./layouts/Layout";
 import NoLayout from "./layouts/NoLayout";
 
@@ -19,7 +23,9 @@ createInertiaApp({
   setup({ el, App, props }) {
     createRoot(el).render(
       <StrictMode>
-        <App {...props} />
+        <MantineProvider>
+          <App {...props} />
+        </MantineProvider>
       </StrictMode>,
     );
   },

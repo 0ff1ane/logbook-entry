@@ -18,7 +18,7 @@ export default defineConfig(({ mode }) => {
     build: {
       manifest: "manifest.json",
       outDir: resolve("./assets"),
-      target: ["es2022"],
+      // target: ["es2022"],
       rollupOptions: {
         input: resolve("./src/main.tsx"),
         output: {

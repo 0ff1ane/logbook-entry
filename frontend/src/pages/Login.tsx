@@ -1,5 +1,7 @@
 import { useCallback, useMemo, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
+import { Button, Paper, Text, TextInput } from "@mantine/core";
+import { IconAt } from "@tabler/icons-react";
 
 import {
   appsAccountsRoutesLogin,
@@ -10,6 +12,8 @@ function Login() {
   const [stage, setStage] = useState<"login" | "register">("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [initials, setInitials] = useState("");
 
   const loginMutation = useMutation({
     mutationFn: () =>
@@ -18,7 +22,7 @@ function Login() {
       }),
     onSuccess: (data) => {
       if (data?.data?.success) {
-        window.location.href = "/todos";
+        window.location.href = "/logbooks";
       } else {
         alert(data?.data?.message);
       }
@@ -28,7 +32,7 @@ function Login() {
   const registerMutation = useMutation({
     mutationFn: () =>
       appsAccountsRoutesRegister({
-        body: { email, password },
+        body: { email, password, name, initials },
       }),
     onSuccess: (data) => {
       console.log(data);
@@ -41,115 +45,120 @@ function Login() {
     },
   });
 
-  const isFormValid = useMemo(
-    () =>
-      email.length > 5 &&
-      email.length < 20 &&
-      password.length > 5 &&
-      password.length < 20,
-    [email, password],
+  const isEmailValid = email.length >= 5 && email.length <= 20;
+  const isPasswordValid = password.length >= 5 && password.length <= 20;
+  const isNameValid = name.length >= 5 && name.length <= 20;
+  const isInitialsValid = initials.length >= 2 && initials.length <= 5;
+  const isLoginFormValid = useMemo(
+    () => isEmailValid && isPasswordValid,
+    [isEmailValid, isPasswordValid],
+  );
+  const isRegistrationFormValid = useMemo(
+    () => isEmailValid && isPasswordValid && isNameValid && isInitialsValid,
+    [isEmailValid, isPasswordValid, isNameValid, isInitialsValid],
   );
 
   const login = useCallback(() => {
-    if (isFormValid) {
+    if (isLoginFormValid) {
       loginMutation.mutate();
     }
-  }, [isFormValid, loginMutation]);
+  }, [isLoginFormValid, loginMutation]);
 
   const register = useCallback(() => {
-    if (isFormValid) {
+    if (isRegistrationFormValid) {
       registerMutation.mutate();
     }
-  }, [isFormValid, registerMutation]);
+  }, [isRegistrationFormValid, registerMutation]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Sign in to your account
-          </h2>
-        </div>
-        <form className="mt-8 space-y-6">
-          <input type="hidden" name="remember" value="true" />
-          <div className="rounded-md shadow-sm -space-y-px">
-            <div>
-              <label htmlFor="email-address" className="sr-only">
-                Email address
-              </label>
-              <input
-                id="email-address"
-                name="email"
-                type="email"
-                autoComplete="email"
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                placeholder="Email address"
-                value={email}
-                onChange={(e) => setEmail(e.currentTarget.value)}
-              />
+      <Paper shadow="xs" p="xl" className="max-w-md">
+        <Text fw={500} size="lg" className="pb-4">
+          Sign in to your account
+        </Text>
+        <TextInput
+          leftSectionPointerEvents="none"
+          leftSection={<IconAt size={16} />}
+          label="Your Email"
+          placeholder="Your Email"
+          error={
+            !isEmailValid ? "Email must be between 5 and 20 letters" : null
+          }
+          value={email}
+          onChange={(e) => setEmail(e.currentTarget.value)}
+        />
+        <TextInput
+          type="password"
+          rightSectionPointerEvents="none"
+          rightSection={<IconAt size={16} />}
+          label="Password"
+          placeholder="Your Password"
+          error={
+            !isPasswordValid
+              ? "Password must be between 5 and 20 letters"
+              : null
+          }
+          value={password}
+          onChange={(e) => setPassword(e.currentTarget.value)}
+        />
+        {stage === "register" ? (
+          <>
+            <TextInput
+              label="Your name"
+              placeholder="Your name"
+              error={
+                !isNameValid ? "Name must be between 5 and 20 letters" : null
+              }
+              value={name}
+              onChange={(e) => setName(e.currentTarget.value)}
+            />
+            <TextInput
+              label="Initials"
+              placeholder="Your Initials"
+              error={
+                !isInitialsValid
+                  ? "Initials must be between 2 and 5 letters"
+                  : null
+              }
+              value={initials}
+              onChange={(e) => setInitials(e.currentTarget.value)}
+            />
+          </>
+        ) : null}
+        {stage === "login" ? (
+          <>
+            <div
+              className="cursor-pointer text-gray-600 text-sm pt-4"
+              onClick={() => setStage("register")}
+            >
+              Create a new account
             </div>
-            <div>
-              <label htmlFor="password" className="sr-only">
-                Password
-              </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="current-password"
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.currentTarget.value)}
-              />
+            <Button
+              className="mt-4"
+              disabled={!isLoginFormValid || loginMutation.isPending}
+              onClick={login}
+            >
+              {loginMutation.isPending ? "Signing In.." : "Sign In"}
+            </Button>
+          </>
+        ) : (
+          <>
+            <div
+              className="cursor-pointer text-gray-600 text-sm pt-4"
+              onClick={() => setStage("login")}
+            >
+              Already have an account? Sign In
             </div>
-          </div>
-
-          <div className="flex items-center justify-end">
-            {stage === "login" ? (
-              <div className="text-sm">
-                <a
-                  onClick={() => setStage("register")}
-                  className="font-medium text-gray-600 hover:text-gray-500 cursor-pointer"
-                >
-                  Register a new account
-                </a>
-              </div>
-            ) : (
-              <div className="text-sm">
-                <a
-                  onClick={() => setStage("login")}
-                  className="font-medium text-gray-600 hover:text-gray-500 cursor-pointer"
-                >
-                  Already have an account? Login
-                </a>
-              </div>
-            )}
-          </div>
-
-          <div>
-            {stage === "login" ? (
-              <button
-                type="button"
-                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-                onClick={() => login()}
-                disabled={!isFormValid || loginMutation.isPending}
-              >
-                {loginMutation.isPending ? "Signing In" : "Sign in"}
-              </button>
-            ) : (
-              <button
-                type="button"
-                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-                onClick={() => register()}
-                disabled={!isFormValid || registerMutation.isPending}
-              >
-                {registerMutation.isPending ? "Registering" : "Register"}
-              </button>
-            )}
-          </div>
-        </form>
-      </div>
+            <Button
+              className="mt-4"
+              disabled={!isRegistrationFormValid || registerMutation.isPending}
+              onClick={register}
+            >
+              {registerMutation.isPending ? "Registering.." : "Register"}
+            </Button>
+          </>
+        )}
+      </Paper>
     </div>
   );
 }

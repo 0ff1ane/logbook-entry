@@ -9,7 +9,7 @@ class AccountsRoutesTest(TestCase):
     password = "09u23alkdsj"
 
     def setUp(self) -> None:
-        user = Accounts.create_user(email=self.email, password=self.password)
+        user = Accounts.create_user(email=self.email, password=self.password, name="Under Cover", initials="JB")
         Todos.add_todo(text="A todo todo", user_id=user.id)
 
     def test_listing_user_todos(self):
