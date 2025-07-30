@@ -57,7 +57,7 @@ function NavBar() {
         <button
           type="button"
           onClick={logout}
-          className="bg-gray-200 hover:bg-gray-100 text-gray-800 px-2 py-1 rounded text-sm"
+          className="bg-gray-200 hover:bg-gray-100 text-gray-800 px-2 py-1 rounded text-sm cursor-pointer"
         >
           Logout
         </button>

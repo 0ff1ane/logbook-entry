@@ -13,12 +13,15 @@ export default function LogBooksTable() {
     <div className="min-h-screen flex flex-col items-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <Paper shadow="xs" p="xl" className="w-4xl">
         <div className="flex w-full justify-end pb-4">
-          <Button>
-            <Link href="logbooks/new">Create Log Book</Link>
-          </Button>
+          <Link
+            href="logbooks/new"
+            className="bg-blue-500 px-2 py-2 shadow-md text-white rounded"
+          >
+            Create Log Book
+          </Link>
         </div>
         {logbooksQuery.isFetching ? (
-          <div>
+          <div className="flex w-full justify-center py-24">
             <Loader />
           </div>
         ) : logbooksQuery.error ? (

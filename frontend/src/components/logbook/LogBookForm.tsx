@@ -40,6 +40,10 @@ const DEFAULT_FORM_DATA = {
   start_date: dayjs().format("YYYY-MM-DD"),
 };
 
+type Entries<T> = {
+  [K in keyof T]: [K, T[K]];
+}[keyof T];
+
 export default function LogBookForm({ logbook, onUpdateLogEntry }: IProps) {
   const { props } = usePage();
   const current_user = props.current_user as unknown as CustomUserSchema;
@@ -49,6 +53,15 @@ export default function LogBookForm({ logbook, onUpdateLogEntry }: IProps) {
     driver_name: current_user.name,
     driver_initials: current_user.initials,
   });
+
+  const updateFormData = useCallback(
+    (keyval: Entries<CreateLogBookSchema>) => {
+      if (keyval) {
+        setLogBookFormData({ ...logBookFormData, [keyval[0]]: keyval[1] });
+      }
+    },
+    [logBookFormData],
+  );
 
   // on mount
   useEffect(() => {
@@ -182,11 +195,7 @@ export default function LogBookForm({ logbook, onUpdateLogEntry }: IProps) {
             }
             value={logBookFormData?.driver_name}
             onChange={(e) =>
-              logBookFormData &&
-              setLogBookFormData({
-                ...logBookFormData,
-                driver_name: e.currentTarget.value,
-              })
+              updateFormData(["driver_name", e.currentTarget.value])
             }
           />
           <TextInput
@@ -198,11 +207,7 @@ export default function LogBookForm({ logbook, onUpdateLogEntry }: IProps) {
             }
             value={logBookFormData?.driver_initials}
             onChange={(e) =>
-              logBookFormData &&
-              setLogBookFormData({
-                ...logBookFormData,
-                driver_initials: e.currentTarget.value,
-              })
+              updateFormData(["driver_initials", e.currentTarget.value])
             }
           />
           <TextInput
@@ -214,11 +219,7 @@ export default function LogBookForm({ logbook, onUpdateLogEntry }: IProps) {
             }
             value={logBookFormData?.driver_number}
             onChange={(e) =>
-              logBookFormData &&
-              setLogBookFormData({
-                ...logBookFormData,
-                driver_number: e.currentTarget.value,
-              })
+              updateFormData(["driver_number", e.currentTarget.value])
             }
           />
           <TextInput
@@ -227,11 +228,7 @@ export default function LogBookForm({ logbook, onUpdateLogEntry }: IProps) {
             placeholder="Your Co-Driver Name"
             value={logBookFormData?.codriver_name ?? ""}
             onChange={(e) =>
-              logBookFormData &&
-              setLogBookFormData({
-                ...logBookFormData,
-                codriver_name: e.currentTarget.value,
-              })
+              updateFormData(["codriver_name", e.currentTarget.value])
             }
           />
           <TextInput
@@ -245,11 +242,10 @@ export default function LogBookForm({ logbook, onUpdateLogEntry }: IProps) {
             }
             value={logBookFormData?.operating_center_address}
             onChange={(e) =>
-              logBookFormData &&
-              setLogBookFormData({
-                ...logBookFormData,
-                operating_center_address: e.currentTarget.value,
-              })
+              updateFormData([
+                "operating_center_address",
+                e.currentTarget.value,
+              ])
             }
           />
         </div>
@@ -264,11 +260,7 @@ export default function LogBookForm({ logbook, onUpdateLogEntry }: IProps) {
             }
             value={logBookFormData?.vehicle_number}
             onChange={(e) =>
-              logBookFormData &&
-              setLogBookFormData({
-                ...logBookFormData,
-                vehicle_number: e.currentTarget.value,
-              })
+              updateFormData(["vehicle_number", e.currentTarget.value])
             }
           />
           <TextInput
@@ -280,11 +272,7 @@ export default function LogBookForm({ logbook, onUpdateLogEntry }: IProps) {
             }
             value={logBookFormData?.trailer_number}
             onChange={(e) =>
-              logBookFormData &&
-              setLogBookFormData({
-                ...logBookFormData,
-                trailer_number: e.currentTarget.value,
-              })
+              updateFormData(["trailer_number", e.currentTarget.value])
             }
           />
           <NumberInput
@@ -306,14 +294,7 @@ export default function LogBookForm({ logbook, onUpdateLogEntry }: IProps) {
                 ? logBookFormData?.start_date
                 : new Date()
             }
-            onChange={(date) =>
-              logBookFormData &&
-              date &&
-              setLogBookFormData({
-                ...logBookFormData,
-                start_date: date,
-              })
-            }
+            onChange={(date) => date && updateFormData(["start_date", date])}
           />
           <Checkbox
             label="Check if multiday log"
@@ -344,12 +325,7 @@ export default function LogBookForm({ logbook, onUpdateLogEntry }: IProps) {
           placeholder="Shipper"
           error={!isValidShipper ? "Must be between 5 and 20 letters" : null}
           value={logBookFormData?.shipper}
-          onChange={(e) =>
-            setLogBookFormData({
-              ...logBookFormData,
-              shipper: e.currentTarget.value,
-            })
-          }
+          onChange={(e) => updateFormData(["shipper", e.currentTarget.value])}
         />
         <TextInput
           className="text-blue-500"
@@ -357,12 +333,7 @@ export default function LogBookForm({ logbook, onUpdateLogEntry }: IProps) {
           placeholder="Commodity"
           error={!isValidCommodity ? "Must be between 5 and 20 letters" : null}
           value={logBookFormData?.commodity}
-          onChange={(e) =>
-            setLogBookFormData({
-              ...logBookFormData,
-              commodity: e.currentTarget.value,
-            })
-          }
+          onChange={(e) => updateFormData(["commodity", e.currentTarget.value])}
         />
         <TextInput
           className="text-blue-500"
@@ -371,10 +342,7 @@ export default function LogBookForm({ logbook, onUpdateLogEntry }: IProps) {
           error={!isValidLoadNumber ? "Must be between 5 and 20 letters" : null}
           value={logBookFormData?.load_number}
           onChange={(e) =>
-            setLogBookFormData({
-              ...logBookFormData,
-              load_number: e.currentTarget.value,
-            })
+            updateFormData(["load_number", e.currentTarget.value])
           }
         />
       </div>
