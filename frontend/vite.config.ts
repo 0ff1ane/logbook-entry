@@ -16,8 +16,8 @@ export default defineConfig(({ mode }) => {
       conditions: mode === "test" ? ["browser"] : [],
     },
     build: {
+      outDir: resolve("./dist"),
       manifest: "manifest.json",
-      outDir: resolve("./assets"),
       // target: ["es2022"],
       rollupOptions: {
         input: resolve("./src/main.tsx"),
