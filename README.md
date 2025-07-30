@@ -1,5 +1,5 @@
 ## Django, Django-Ninja with InertiaJS, Vite, React, React-Query
-  Simple Todo app with login/register
+  Simple LogBook app
 
 
 ## Notes
@@ -7,22 +7,31 @@
  * Includes simple register/signup with session-based django_auth
  * Uses `@hey-api/openapi-ts` to generate client for frontend based on OpenAPI schema
  * Uses React-Query on the frontend which uses the generated clients
+ * Uses Mantine for UI
 
 
 ## Setup
   * Clone this repo
   * Backend setup
-    * Dependencies are in pyproject.toml. Install using `poetry` or `uv`
+    * Dependencies are in pyproject.toml. Install using `uv`
     * Edit the settings.py file with your DB credentials
-    * Run `poetry run python manage.py migrate` or `uv run python manage.py migrate` to run migrations
-    * Run the server with `poetry run python manage.py runserver` or `uv run python manage.py runserver` depending on what you use
+    * Run `uv run python manage.py migrate` to run migrations
+    * Run the server with `uv run python manage.py runserver` depending on what you use
     * Visit http://localhost:8000/api/docs for the Django-Ninja OpenAPI playground
   * Frontend setup
     * Go to `./frontend` directory
     * Run `npm install`
     * Run `npm run typegen` to generate the client calls from the OpenAPI schema(make sure django server is running)
     * Run `npm run dev`
-  * Visit http://localhost:8000 to see a simple Login/Register page with Todo app tied to the backend and DB
+  * Visit http://localhost:8000 to see a simple Login/Register page with LogBook app tied to the backend and DB
+  * After registering, you can create Logbook entries
+  * After creating a Logbook, you can hover on time-slots on the time chart to add status/time/remarks
+  * The first entry __has__ to be `ON_DUTY`
+  * Entries added will show up as a red dot on the time chart
+  * The chart will show lines between subsequent changes in driver status
+  * You cannot add the same status consecutively, i.e the next status has to be different from the latest one
+  * Hovering on the added entries will show cards with the status/time/remark of that entry(red dot)
+  * The right side will automatically show total hours spent on each status
 
 
 ## References
@@ -37,6 +46,5 @@
   * Add common logging module
   * Fix frontend tests
   * Add SSR for backend
-  * Add DockerFile
   * Cleanup setting csrf token in headers
   * Set OpenAPI labels to different routes
