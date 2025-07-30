@@ -297,7 +297,7 @@ export default function LogChart({ logEntries, onAddLogEntry }: IProps) {
                           !(
                             lastLogEntry === undefined && status !== "OFF_DUTY"
                           ) &&
-                          !(lastLogEntry.status === status) &&
+                          !(lastLogEntry?.status === status) &&
                           !(
                             lastLogEntry?.timePoint &&
                             rowIdx * 4 + sliceIdx <= lastLogEntry.timePoint
