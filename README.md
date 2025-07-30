@@ -24,12 +24,14 @@
     * Run `npm run typegen` to generate the client calls from the OpenAPI schema(make sure django server is running)
     * Run `npm run dev`
   * Visit http://localhost:8000 to see a simple Login/Register page with LogBook app tied to the backend and DB
+
+## Usage
   * After registering, you can create Logbook entries
   * After creating a Logbook, you can hover on time-slots on the time chart to add status/time/remarks
-  * The first entry __has__ to be `ON_DUTY`
+  * __NOTE__: The first entry __has__ to be `ON_DUTY`
   * Entries added will show up as a red dot on the time chart
   * The chart will show lines between subsequent changes in driver status
-  * You cannot add the same status consecutively, i.e the next status has to be different from the latest one
+  * __NOTE__: You cannot add the same status consecutively, i.e the next status has to be different from the latest one
   * Hovering on the added entries will show cards with the status/time/remark of that entry(red dot)
   * The right side will automatically show total hours spent on each status
 
