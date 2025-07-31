@@ -31,12 +31,14 @@ DEBUG = True if os.getenv("MODE") != "prod" else False
 ALLOWED_HOSTS = [
     'localhost',
     'django-inertia-react.fly.dev',
+    'https://app-3e3b496d-27b5-4a81-b247-78e90bb08da5.cleverapps.io'
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     "http://127.0.0.1:5173",
     'http://localhost',
     'https://django-inertia-react.fly.dev',
+    'https://app-3e3b496d-27b5-4a81-b247-78e90bb08da5.cleverapps.io'
 ]
 
 # Application definition
