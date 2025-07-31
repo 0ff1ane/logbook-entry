@@ -45,7 +45,7 @@ RUN npm --prefix frontend run buildnotypecheck
 RUN uv run python manage.py collectstatic --noinput
 
 # export gunicorn port so deployment can detect it
-EXPOSE 8000
+EXPOSE 8080
 
 # CMD ["gunicorn", "django_inertia_react.asgi:application", "-k", "uvicorn_worker.UvicornWorker"]
 CMD ["uv", "run", "gunicorn", "-k", "uvicorn.workers.UvicornWorker", "django_inertia_react.asgi:application"]
