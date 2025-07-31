@@ -10,7 +10,13 @@ import {
   type CustomUserSchema,
 } from "../../generated/client";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false, // default: true
+    },
+  },
+});
 
 function NavBar() {
   const { url, props } = usePage();
@@ -57,9 +63,10 @@ function NavBar() {
         <button
           type="button"
           onClick={logout}
+          disabled={logoutMutation.isPending}
           className="bg-gray-200 hover:bg-gray-100 text-gray-800 px-2 py-1 rounded text-sm cursor-pointer"
         >
-          Logout
+          {logoutMutation.isPending ? "Logging out.." : "Logout"}
         </button>
       </div>
     </nav>
