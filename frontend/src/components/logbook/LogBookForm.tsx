@@ -315,6 +315,7 @@ export default function LogBookForm({ logbook, onUpdateLogEntry }: IProps) {
             addLogEntryMutation.mutate(newLogEntry)
           }
           logEntries={logbook?.log_entries ?? []}
+          addLogEntryMutationPending={addLogEntryMutation.isPending}
         />
       )}
       {/* Shipping/Commodity Details */}
@@ -347,8 +348,13 @@ export default function LogBookForm({ logbook, onUpdateLogEntry }: IProps) {
         />
       </div>
       {logbook === null && (
-        <Button disabled={!isValidFormData} onClick={() => addLogBook()}>
-          Create LogBook
+        <Button
+          disabled={!isValidFormData || addLogBookMutation.isPending}
+          onClick={() => addLogBook()}
+        >
+          {addLogBookMutation.isPending
+            ? "Creating LogBook.."
+            : "Create LogBook"}
         </Button>
       )}
     </Paper>

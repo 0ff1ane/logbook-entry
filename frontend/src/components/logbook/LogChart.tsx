@@ -1,6 +1,13 @@
 import { Button, Modal, Text, TextInput } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { Fragment, useLayoutEffect, useMemo, useRef, useState } from "react";
+import {
+  Fragment,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import {
   Stage,
   Layer,
@@ -81,9 +88,14 @@ function TimeSliceLine({
 interface IProps {
   logEntries: LogEntrySchema[];
   onAddLogEntry: (newLogEntry: CreateLogEntrySchema) => void;
+  addLogEntryMutationPending: boolean;
 }
 
-export default function LogChart({ logEntries, onAddLogEntry }: IProps) {
+export default function LogChart({
+  logEntries,
+  onAddLogEntry,
+  addLogEntryMutationPending,
+}: IProps) {
   const ref = useRef(null);
   const [viewWidth, setViewWidth] = useState(0);
 
@@ -124,7 +136,16 @@ export default function LogChart({ logEntries, onAddLogEntry }: IProps) {
   const [modalOpened, { open: openModal, close: closeModal }] =
     useDisclosure(false);
 
-  const lastLogEntry = useMemo(() => logEntries.at(-1), [logEntries]);
+  useEffect(() => {
+    if (!addLogEntryMutationPending) {
+      closeModal();
+    }
+  }, [addLogEntryMutationPending, closeModal]);
+
+  const lastLogEntry = useMemo(
+    () => logEntries[logEntries.length - 1] as LogEntrySchema | undefined,
+    [logEntries],
+  );
   const [newLogEntry, setNewLogEntry] =
     useState<Partial<CreateLogEntrySchema> | null>(null);
   const [newLogEntryRemark, setNewLogEntryRemark] = useState("");
@@ -299,8 +320,8 @@ export default function LogChart({ logEntries, onAddLogEntry }: IProps) {
                           ) &&
                           !(lastLogEntry?.status === status) &&
                           !(
-                            lastLogEntry?.timePoint &&
-                            rowIdx * 4 + sliceIdx <= lastLogEntry.timePoint
+                            lastLogEntry?.time_point &&
+                            rowIdx * 4 + sliceIdx <= lastLogEntry.time_point
                           )
                         }
                         onClick={(status, time_point) => {
@@ -391,15 +412,17 @@ export default function LogChart({ logEntries, onAddLogEntry }: IProps) {
           />
           <Button
             className="my-4"
-            disabled={!isNewLogEntryValid}
+            disabled={!isNewLogEntryValid || addLogEntryMutationPending}
             onClick={() => {
               if (newLogEntryRemark) {
                 onAddLogEntry({ ...newLogEntry, remark: newLogEntryRemark });
-                closeModal();
+                // closeModal();
               }
             }}
           >
-            Add Log Entry
+            {addLogEntryMutationPending
+              ? "Adding Log Entry.."
+              : "Add Log Entry"}
           </Button>
         </Modal>
       </div>
