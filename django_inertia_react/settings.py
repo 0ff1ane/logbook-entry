@@ -16,15 +16,7 @@ from pathlib import Path
 import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-cat >> ./django_inertia_react/test_static.py<< EOF
-import os
-from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
-print(BASE_DIR)
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
-print(STATIC_ROOT)
-EOF
-
 
 
 # Quick-start development settings - unsuitable for production
