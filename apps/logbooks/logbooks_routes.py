@@ -16,9 +16,12 @@ def get_logbook(request, logbook_id: int):
     return LogBooks.get_logbook_by_id(logbook_id)
 
 
-@router.post('/', response=CreateLogBookResponseSchema)
+@router.post('/', response=CreateLogBookResponseSchema, auth=None)
 def add_logbook(request, payload: CreateLogBookSchema):
     current_user = request.user
+    if not current_user.is_authenticated:
+        return CreateLogBookResponseSchema(success=False, message="Your session may have timed out. Please login again")
+
     (ok, logbook_or_err) = LogBooks.add_logbook(
         user_id=current_user.id,
         driver_name=payload.driver_name,
@@ -40,8 +43,12 @@ def add_logbook(request, payload: CreateLogBookSchema):
 
 
 
-@router.put('/', response=LogBookSchema)
+@router.put('/', response=LogBookSchema, auth=None)
 def update_logbook(request, payload: UpdateLogBookSchema):
+    current_user = request.user
+    if not current_user.is_authenticated:
+        return CreateLogBookResponseSchema(success=False, message="Your session may have timed out. Please login again")
+
     return LogBooks.update_logbook(
         logbook_id=payload.logbook_id,
         miles_driven=payload.miles_driven,

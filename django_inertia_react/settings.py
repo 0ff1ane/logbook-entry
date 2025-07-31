@@ -33,6 +33,11 @@ ALLOWED_HOSTS = [
     'django-inertia-react.fly.dev',
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    "http://127.0.0.1:5173",
+    'http://localhost',
+    'https://django-inertia-react.fly.dev',
+]
 
 # Application definition
 
@@ -88,7 +93,9 @@ WSGI_APPLICATION = 'django_inertia_react.wsgi.application'
 
 DATABASES = {
     "default": dj_database_url.config(
-        default="postgresql://sid@localhost:5432/spotter_logbook_dev", conn_max_age=600
+        default="postgresql://sid@localhost:5432/spotter_logbook_dev",
+        conn_max_age=600,
+        conn_health_checks=True
     )
 }
 

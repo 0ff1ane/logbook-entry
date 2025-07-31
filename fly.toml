@@ -25,8 +25,9 @@ max_machines_running = 1
 processes = ['app']
 
 [[vm]]
+size = 'shared-cpu-1x'
 memory = '512mb'
-cpu_kind = 'shared'
+cpu_kind = "shared"
 cpus = 1
 
 [[statics]]
