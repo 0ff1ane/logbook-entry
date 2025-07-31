@@ -26,8 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-==hi9q1$^yyo_z8d8slquy@8qfn&_2ipch@(%go*2!&hrknn)+'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True if os.getenv("MODE") != "prod" else False
-DEBUG = True
+DEBUG = True if os.getenv("MODE") != "prod" else False
 
 ALLOWED_HOSTS = [
     'localhost',
@@ -155,7 +154,7 @@ CSRF_HEADER_NAME = "HTTP_X_XSRF_TOKEN"
 CSRF_COOKIE_NAME = "XSRF-TOKEN"
 
 DJANGO_VITE_ASSETS_PATH = f"{BASE_DIR}/frontend/dist"
-DJANGO_VITE_DEV_MODE = True if os.getenv("MODE") != "prod" else False
+DJANGO_VITE_DEV_MODE = DEBUG
 DJANGO_VITE_DEV_SERVER_PORT = 5174
 
 STATIC_ROOT = f"{BASE_DIR}/static"
