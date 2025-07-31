@@ -16,6 +16,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
+
 from .ninja_api import ninja_api
 from templates import views as inertia_views
 
@@ -27,4 +30,4 @@ urlpatterns = [
     path("logbooks/new", inertia_views.new_logbook, name="NewLogBook"),
     path("logbook/<int:logbook_id>", inertia_views.logbook, name="LogBook"),
     path("log", inertia_views.log, name="Log"),
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
